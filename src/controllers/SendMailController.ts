@@ -3,6 +3,7 @@ import { getCustomRepository } from "typeorm";
 import { SurveysRepository } from "../repositories/SurveysRepository";
 import { SurveysUsersRepository } from "../repositories/SurveysUsersRepository";
 import { UsersRepository } from "../repositories/UsersRepository";
+import SendMailService from "../services/SendMailService";
 class SendMailController {
   async execute(request: Request, response: Response) {
     const { email, survey_id } = request.body;
@@ -36,6 +37,11 @@ class SendMailController {
     await surveysUserRepository.save(surveyUser);
 
     //enviar email para o usuario
+    await SendMailService.execute(
+      email,
+      surveyAlreadyExists.title,
+      surveyAlreadyExists.description
+    );
 
     return response.json(surveyUser);
   }
