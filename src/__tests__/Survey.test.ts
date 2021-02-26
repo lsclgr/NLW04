@@ -17,4 +17,12 @@ describe("Surveys", () => {
     expect(response.body).toHaveProperty("id");
   });
 
+  it("Should be able to get all surveys", async () => {
+    await request(app).post("/surveys").send({
+      title: "Survey Example2",
+      description: "Survey Example2",
+    });
+    const response = await request(app).get("/surveys");
+    expect(response.body.length).toBe(2);
+  });
 });
